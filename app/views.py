@@ -46,13 +46,23 @@ def login():
 
                 login_user(user)
                 flash('Logged in successfully.', 'success')
-                return redirect(url_for("/secure-page"))  
+                return redirect(url_for("secure_page"))
+            else:
+                flash('Incorrect password or username.', 'danger')
     return render_template("login.html", form=form)
 
-@app.route('/secure-page')
+@app.route('/secure_page')
 @login_required
 def secure_page():
     return render_template('secure_page.html')
+
+@app.route("/logout")
+@login_required
+def logout():
+    # Logout the user and end the session
+    logout_user()
+    flash('You have been logged out.', 'danger')
+    return redirect(url_for('home'))
 
 # user_loader callback. This callback is used to reload the user object from
 # the user ID stored in the session
